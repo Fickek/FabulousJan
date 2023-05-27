@@ -7,6 +7,12 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed = 1.0f;
     [SerializeField] private float _jumpStrength = 1.0f;
+
+    [SerializeField] private Sprite[] _runSprites;
+    [SerializeField] private Sprite _spriteClimb;
+    private SpriteRenderer _spriteRenderer;
+    private int _spriteIndex;
+
     private Collider2D _collider;
     private Collider2D[] _results;
     private Rigidbody2D _rigidbody;
@@ -14,14 +20,26 @@ public class PlayerController : MonoBehaviour
     private bool _grounded;
     private bool _climbing;
 
-    public void Awake()
+    private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
         _results = new Collider2D[4];
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    public void CheckCollision()
+    private void OnEnable()
+    {
+        InvokeRepeating(nameof(AnimateSprite), 1f / 12f, 1f / 12f);
+    }
+
+    private void OnDisable()
+    {
+        CancelInvoke();
+    }
+
+
+    private void CheckCollision()
     {
         _climbing = false;
         _grounded = false;
@@ -48,9 +66,9 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-    } 
+    }
 
-    public void Update()
+    private void Update()
     {
         CheckCollision();
 
@@ -87,9 +105,27 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public void FixedUpdate()
+    private void FixedUpdate()
     {
         _rigidbody.MovePosition(_rigidbody.position + _direction * Time.fixedDeltaTime);
+    }
+
+    private void AnimateSprite()
+    {
+        if (_climbing)
+        {
+            _spriteRenderer.sprite = _spriteClimb;
+        }
+        else if(_direction.x != 0f)
+        {
+            _spriteIndex++;
+            if (_spriteIndex >= _runSprites.Length)
+            {
+                _spriteIndex = 0;
+            }
+            _spriteRenderer.sprite = _runSprites[_spriteIndex];
+        }
+        
     }
 
 }

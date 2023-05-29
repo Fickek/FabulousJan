@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private int _spriteIndex;
 
+    //private GameManager _gameManager;
+
     private Collider2D _collider;
     private Collider2D[] _results;
     private Rigidbody2D _rigidbody;
@@ -26,6 +28,7 @@ public class PlayerController : MonoBehaviour
         _collider = GetComponent<Collider2D>();
         _results = new Collider2D[4];
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        //_gameManager = GetComponent<GameManager>();
     }
 
     private void OnEnable()
@@ -126,6 +129,21 @@ public class PlayerController : MonoBehaviour
             _spriteRenderer.sprite = _runSprites[_spriteIndex];
         }
         
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Objective"))
+        {
+            enabled = false;
+            FindObjectOfType<GameManager>().LevelComplected();
+        }
+
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            enabled = false;
+            FindObjectOfType<GameManager>().LevelFailed();
+        }
     }
 
 }

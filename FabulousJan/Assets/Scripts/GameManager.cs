@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class GameManager : MonoBehaviour
         _lives = 3;
     }
 
-    public void LevelComplected() 
+    public void LevelComplete() 
     {
         _score += 1000;
         //Load new level
@@ -39,6 +40,11 @@ public class GameManager : MonoBehaviour
             //Reload level
         }
         
+    }
+
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
 }

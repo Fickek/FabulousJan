@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,8 +14,6 @@ public class GameManager : MonoBehaviour
     {
         NewGame();
     }
-
-
 
     private void NewGame()
     {
@@ -45,6 +44,16 @@ public class GameManager : MonoBehaviour
     public void RestartLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void PauseLevel()
+    {
+        Time.timeScale = 0;
+    }
+
+    public void PlayLevel()
+    {
+        Time.timeScale = 1;
     }
 
 }

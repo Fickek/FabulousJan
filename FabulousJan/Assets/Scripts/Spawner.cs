@@ -9,7 +9,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] private float _minTime = 2f;
     [SerializeField] private float _maxTime = 4f;
 
-
+    [SerializeField] private float _averageTime = 3f;
 
     private void Start()
     {
@@ -20,6 +20,8 @@ public class Spawner : MonoBehaviour
     private void Spawn()
     {
         Instantiate(_spawner, transform.position, Quaternion.identity);
-        Invoke(nameof(Spawn), Random.Range(_minTime, _maxTime));
+        Invoke(nameof(Spawn), _averageTime);
+
     }
+
 }

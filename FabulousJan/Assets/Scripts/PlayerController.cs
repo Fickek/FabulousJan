@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using Random = UnityEngine.Random;
 
 namespace Player.Mechanics
 {
@@ -13,10 +15,10 @@ namespace Player.Mechanics
 
         [SerializeField] private Sprite[] _runSprites;
         [SerializeField] private Sprite[] _spriteClimb;
+        [SerializeField] private Sprite _jumpSprite;
         private SpriteRenderer _spriteRenderer;
         private int _spriteRunIndex;
         private int _spriteClimbIndex;
-
         //private GameManager _gameManager;
 
         private Collider2D _collider;
@@ -26,17 +28,25 @@ namespace Player.Mechanics
         private bool _grounded;
         private bool _climbing;
 
+
+        internal Animator animator;
+        public bool _isJump;
+
+        public Stack<string> LootStack = new Stack<string>();
+
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody2D>();
             _collider = GetComponent<Collider2D>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             //_gameManager = GetComponent<GameManager>();
+            animator = GetComponent<Animator>();
         }
 
         private void OnEnable()
         {
-            InvokeRepeating(nameof(AnimateSprite), 1f / 12f, 1f / 12f);
+            //InvokeRepeating(nameof(AnimateSprite), 1f / 12f, 1f / 12f);
+
         }
 
         private void OnDisable()
@@ -48,6 +58,7 @@ namespace Player.Mechanics
         {
             CheckCollision();
             SetDirection();
+            AnimatePlayer();
         }
 
         private void FixedUpdate()
@@ -55,7 +66,7 @@ namespace Player.Mechanics
             _rigidbody.MovePosition(_rigidbody.position + _direction * Time.fixedDeltaTime);
         }
 
-        private void AnimateSprite()
+        /*private void AnimateSprite()
         {
             if (_climbing && _direction.y != 0f)
             {
@@ -75,8 +86,33 @@ namespace Player.Mechanics
                 }
                 _spriteRenderer.sprite = _runSprites[_spriteRunIndex];
             }
+            else if(Input.GetButtonDown("Jump") && !_grounded)
+            {
+                _spriteRenderer.sprite = _jumpSprite;
+            }
+        }*/
+
+
+        private void AnimatePlayer()
+        {
+
+            if(_direction.x != 0f && _grounded)
+            {
+                animator.SetFloat("directionX", Mathf.Abs(_direction.x));
+            } 
+            else if (Input.GetButtonDown("Jump"))
+            {
+                animator.SetBool("Jump", _isJump);
+            }
+
+
+            //if (_grounded)
+            //{
+            //    animator.SetBool("jump", false);
+            //}
 
         }
+
 
         #region CheckCollision
         private void CheckCollision()
@@ -111,6 +147,7 @@ namespace Player.Mechanics
         private void SetDirection()
         {
             _direction.x = Input.GetAxis("Horizontal") * _moveSpeed;
+            _isJump = false;
 
             if (_grounded)
             {
@@ -134,6 +171,7 @@ namespace Player.Mechanics
             else if (_grounded && Input.GetButtonDown("Jump"))
             {
                 _direction = Vector2.up * _jumpStrength;
+                _isJump = true;
             }
             else
             {
@@ -154,7 +192,10 @@ namespace Player.Mechanics
             {
                 enabled = false;
                 FindObjectOfType<GameManager>().LevelFailed();
-            }
+            }  
+            //var rareLoot = LootStack.Where(item => item.rarity >= 3);
         }
+
+
     }
 }

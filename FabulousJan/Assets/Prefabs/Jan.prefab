@@ -8,11 +8,12 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8060833090512745031}
+  - component: {fileID: 9204803576661565444}
   - component: {fileID: 8060833090512745028}
   - component: {fileID: 8060833090512745029}
   - component: {fileID: 8060833090512745018}
   - component: {fileID: -3771202746636532915}
+  - component: {fileID: 6666732969376856387}
   m_Layer: 0
   m_Name: Jan
   m_TagString: Player
@@ -20,8 +21,8 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8060833090512745031
-Transform:
+--- !u!224 &9204803576661565444
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -35,6 +36,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -5.15, y: -3.293}
+  m_SizeDelta: {x: 0.625, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &8060833090512745028
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -138,3 +144,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 1
   _jumpStrength: 1
+  _runSprites: []
+  _spriteClimb: []
+  _jumpSprite: {fileID: 0}
+  _isJump: 0
+--- !u!223 &6666732969376856387
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8060833090512745019}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0

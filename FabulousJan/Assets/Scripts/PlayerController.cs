@@ -1,201 +1,227 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
-using Random = UnityEngine.Random;
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.HID;
 
-namespace Player.Mechanics
+public class PlayerController : MonoBehaviour
 {
-    public class PlayerController : MonoBehaviour
+
+    public GameManager gameManager;
+
+    private SpriteRenderer spriteRenderer;
+    //public Sprite[] runSprites;
+    //public Sprite climbSprite;
+    private int spriteIndex;
+
+    private new Rigidbody2D rigidbody2D;
+    private new Collider2D collider;
+
+    private Collider2D[] overlaps = new Collider2D[4];
+    private Vector2 direction;
+
+    private bool grounded;
+    private bool climbing;
+    public bool jump;
+
+
+    public float moveSpeed = 3f;
+    public float jumpStrength = 4f;
+
+    internal Animator animator;
+
+
+    private void Awake()
     {
-        [SerializeField] private float _moveSpeed = 1.0f;
-        [SerializeField] private float _jumpStrength = 1.0f;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        rigidbody2D = GetComponent<Rigidbody2D>();
+        collider = GetComponent<Collider2D>();
+        animator = GetComponent<Animator>();
+    }
 
-        [SerializeField] private Sprite[] _runSprites;
-        [SerializeField] private Sprite[] _spriteClimb;
-        [SerializeField] private Sprite _jumpSprite;
-        private SpriteRenderer _spriteRenderer;
-        private int _spriteRunIndex;
-        private int _spriteClimbIndex;
-        //private GameManager _gameManager;
+    private void OnEnable()
+    {
+        //InvokeRepeating(nameof(AnimateSprite), 1f/12f, 1f/12f);
+    }
 
-        private Collider2D _collider;
-        private Collider2D[] _results = new Collider2D[4];
-        private Rigidbody2D _rigidbody;
-        private Vector2 _direction;
-        private bool _grounded;
-        private bool _climbing;
+    private void OnDisable()
+    {
+        //CancelInvoke();
+    }
 
+    private void Update()
+    {
+        CheckCollision();
+        SetDirection();
+        AnimatePlayer();
+    }
 
-        internal Animator animator;
-        public bool _isJump;
+    private void CheckCollision()
+    {
+        grounded = false;
+        climbing = false;
 
-        public Stack<string> LootStack = new Stack<string>();
+        //the amount that two colliders can overlap
+        //increase this value for steeper platforms
 
-        private void Awake()
+        float skinWidth = 0.1f;
+
+        Vector2 size = collider.bounds.size;
+        size.y += skinWidth;
+        size.x /= 2f;
+
+        int amount = Physics2D.OverlapBoxNonAlloc(transform.position, size, 0f, overlaps);
+
+        for (int i = 0; i < amount; i++)
         {
-            _rigidbody = GetComponent<Rigidbody2D>();
-            _collider = GetComponent<Collider2D>();
-            _spriteRenderer = GetComponent<SpriteRenderer>();
-            //_gameManager = GetComponent<GameManager>();
-            animator = GetComponent<Animator>();
-        }
+            GameObject hit = overlaps[i].gameObject;
 
-        private void OnEnable()
-        {
-            //InvokeRepeating(nameof(AnimateSprite), 1f / 12f, 1f / 12f);
-
-        }
-
-        private void OnDisable()
-        {
-            CancelInvoke();
-        }
-
-        private void Update()
-        {
-            CheckCollision();
-            SetDirection();
-            AnimatePlayer();
-        }
-
-        private void FixedUpdate()
-        {
-            _rigidbody.MovePosition(_rigidbody.position + _direction * Time.fixedDeltaTime);
-        }
-
-        /*private void AnimateSprite()
-        {
-            if (_climbing && _direction.y != 0f)
+            if (hit.layer == LayerMask.NameToLayer("Ground"))
             {
-                _spriteClimbIndex++;
-                if (_spriteClimbIndex >= _spriteClimb.Length)
-                {
-                    _spriteClimbIndex = 0;
-                }
-                _spriteRenderer.sprite = _spriteClimb[_spriteClimbIndex];
+
+                // Only set as grounded if the platform is below the player
+                grounded = hit.transform.position.y < (transform.position.y - 0.5f + skinWidth);
+
+                // Turn off collision on platforms the player is not grounded to
+                Physics2D.IgnoreCollision(overlaps[i], collider, !grounded);
             }
-            else if (_grounded && _direction.x != 0f)
+            else if (hit.layer == LayerMask.NameToLayer("Ladder"))
             {
-                _spriteRunIndex++;
-                if (_spriteRunIndex >= _runSprites.Length)
-                {
-                    _spriteRunIndex = 0;
-                }
-                _spriteRenderer.sprite = _runSprites[_spriteRunIndex];
-            }
-            else if(Input.GetButtonDown("Jump") && !_grounded)
-            {
-                _spriteRenderer.sprite = _jumpSprite;
-            }
-        }*/
-
-
-        private void AnimatePlayer()
-        {
-
-            if(_direction.x != 0f && _grounded)
-            {
-                animator.SetFloat("directionX", Mathf.Abs(_direction.x));
-            } 
-            else if (Input.GetButtonDown("Jump"))
-            {
-                animator.SetBool("Jump", _isJump);
+                climbing = true;
             }
 
-
-            //if (_grounded)
-            //{
-            //    animator.SetBool("jump", false);
-            //}
-
-        }
-
-
-        #region CheckCollision
-        private void CheckCollision()
-        {
-            _climbing = false;
-            _grounded = false;
-
-            Vector2 size = _collider.bounds.size;
-            size.y += 0.1f;
-            size.x /= 2f;
-
-            int amount = Physics2D.OverlapBoxNonAlloc(transform.position, size, 0f, _results);
-
-            for (int i = 0; i < amount; i++)
-            {
-                GameObject hit = _results[i].gameObject;
-
-                if (hit.layer == LayerMask.NameToLayer("Ground"))
-                {
-                    _grounded = hit.transform.position.y < (transform.position.y - 0.5f);
-                    Physics2D.IgnoreCollision(_results[i], _collider, !_grounded);
-                }
-                else if (hit.layer == LayerMask.NameToLayer("Ladder"))
-                {
-                    _climbing = true;
-                }
-            }
-        }
-        #endregion
-
-        #region SetDirection
-        private void SetDirection()
-        {
-            _direction.x = Input.GetAxis("Horizontal") * _moveSpeed;
-            _isJump = false;
-
-            if (_grounded)
-            {
-                _direction.y = Mathf.Max(_direction.y, -1f);
-            }
-
-            if (_direction.x > 0f)
-            {
-                transform.eulerAngles = Vector3.zero;
-            }
-            else if (_direction.x < 0f)
-            {
-                transform.eulerAngles = new Vector3(0f, 180f, 0f);
-            }
-
-
-            if (_climbing)
-            {
-                _direction.y = Input.GetAxis("Vertical") * _moveSpeed;
-            }
-            else if (_grounded && Input.GetButtonDown("Jump"))
-            {
-                _direction = Vector2.up * _jumpStrength;
-                _isJump = true;
-            }
-            else
-            {
-                _direction += Physics2D.gravity * Time.deltaTime;
-            }
-        } 
-        #endregion
-
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            if (collision.gameObject.CompareTag("Objective"))
-            {
-                enabled = false;
-                FindObjectOfType<GameManager>().LevelComplete();
-            }
-
-            if (collision.gameObject.CompareTag("Obstacle"))
-            {
-                enabled = false;
-                FindObjectOfType<GameManager>().LevelFailed();
-            }  
-            //var rareLoot = LootStack.Where(item => item.rarity >= 3);
         }
 
 
     }
+
+
+    private void SetDirection()
+    {
+
+        if (climbing)
+        {
+            direction.y = Input.GetAxis("Vertical") * moveSpeed;
+        } 
+        else if (grounded && Input.GetButtonDown("Jump"))
+        {
+            direction = Vector2.up * jumpStrength;
+        } 
+        else
+        {
+            direction += Physics2D.gravity * Time.deltaTime;
+        }
+
+        direction.x = Input.GetAxis("Horizontal") * moveSpeed;
+
+        // Prevent gravity from building up infinitely
+        if (grounded)
+        {
+            direction.y = Mathf.Max(direction.y, -1f);
+        }
+
+        if (direction.x > 0f) 
+        {
+            transform.eulerAngles = Vector3.zero;
+        } 
+        else if (direction.x < 0f)
+        {
+            transform.eulerAngles = new Vector3(0f, 180f, 0f);
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        rigidbody2D.MovePosition(rigidbody2D.position + direction * Time.fixedDeltaTime);
+    }
+
+    //private void AnimateSprite()
+    //{
+    //    if (climbing)
+    //    {
+    //        spriteRenderer.sprite = climbSprite;
+    //    }
+    //    else if (direction.x != 0f)
+    //    {
+    //        spriteIndex++;
+
+    //        if (spriteIndex >= runSprites.Length) {
+    //            spriteIndex = 0;
+    //        }
+
+    //        if (spriteIndex > 0 && spriteIndex <= runSprites.Length) {
+    //            spriteRenderer.sprite = runSprites[spriteIndex];
+    //        }
+    //    }
+    //}
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Objective"))
+        {
+            enabled = false;
+            //gameManager.LevelComplete();
+        }
+        else if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            enabled = false;
+            
+            animator.SetTrigger("DeathTrigger");
+
+            gameManager.LevelFailed();
+            
+
+            rigidbody2D.velocity = Vector2.zero;
+            rigidbody2D.gravityScale = 0;
+            rigidbody2D.simulated = false;
+        }
+
+    }
+
+
+
+
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Ladder")
+        {
+            //grounded = false;
+            //this.animator.SetInteger("AnimState", 1);
+        }
+    }
+
+
+    private void AnimatePlayer()
+    {
+
+        if (direction.x != 0f && grounded)
+        {
+            animator.SetBool("Ground", true);
+        }
+        else
+        {
+            animator.SetBool("Ground", false);
+        }
+
+        if ((Input.GetKey(KeyCode.Space) && grounded))
+        {
+            animator.SetBool("Jump", true);
+        }
+        else if(grounded)
+        {
+            animator.SetBool("Jump", false);
+        }
+
+        if (climbing)
+        {
+            animator.SetBool("Climb", climbing);
+            animator.SetBool("Jump", false);
+        }
+        else
+        {
+            animator.SetBool("Climb", climbing);
+        }
+    }
+
 }
+

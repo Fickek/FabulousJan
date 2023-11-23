@@ -21,7 +21,6 @@ public class Spawner : MonoBehaviour
     {
         Instantiate(_spawner, transform.position, Quaternion.identity);
         Invoke(nameof(Spawn), _averageTime);
-
     }
 
 }

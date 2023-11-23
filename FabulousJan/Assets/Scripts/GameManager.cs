@@ -29,31 +29,23 @@ public class GameManager : MonoBehaviour
 
     public void LevelFailed()
     {
-        _lives--;
+        //_lives--;
 
-        if(_lives <= 0)
+        RestartLevel();
+
+        if (_lives <= 0)
         {
-            NewGame();
+            //RestartLevel();
         }
         else {
             //Reload level
         }
         
     }
+    public void RestartLevel() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    public void PauseLevel() => Time.timeScale = 0;
+    public void PlayLevel() => Time.timeScale = 1;
+    
 
-    public void RestartLevel()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    public void PauseLevel()
-    {
-        Time.timeScale = 0;
-    }
-
-    public void PlayLevel()
-    {
-        Time.timeScale = 1;
-    }
 
 }

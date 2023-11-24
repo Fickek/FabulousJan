@@ -984,8 +984,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39c9694bb76b56a4583b332a377667bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  changeTime: 14
-  sceneName: GameplayScene
+  changeTime: 19
+  sceneName: Subtitles
 --- !u!4 &1127924564
 Transform:
   m_ObjectHideFlags: 0

@@ -45,7 +45,5 @@ public class GameManager : MonoBehaviour
     public void RestartLevel() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     public void PauseLevel() => Time.timeScale = 0;
     public void PlayLevel() => Time.timeScale = 1;
-    
-
 
 }

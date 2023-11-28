@@ -31,15 +31,15 @@ public class GameManager : MonoBehaviour
     {
         //_lives--;
 
-        RestartLevel();
-
         if (_lives <= 0)
         {
             //RestartLevel();
         }
-        else {
-            //Reload level
+        else 
+        {
+            RestartLevel();
         }
+
         
     }
     public void RestartLevel() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);

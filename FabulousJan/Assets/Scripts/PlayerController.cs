@@ -30,6 +30,9 @@ public class PlayerController : MonoBehaviour
     internal Animator animator;
 
 
+    private bool rightPressed, leftPressed;
+
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -119,20 +122,18 @@ public class PlayerController : MonoBehaviour
             direction.y = Mathf.Max(direction.y, -1f);
         }
 
-        if (direction.x > 0f) 
+        if (direction.x > 0f)
         {
             transform.eulerAngles = Vector3.zero;
-        } 
+        }
         else if (direction.x < 0f)
         {
             transform.eulerAngles = new Vector3(0f, 180f, 0f);
         }
+
     }
 
-    private void FixedUpdate()
-    {
-        rigidbody2D.MovePosition(rigidbody2D.position + direction * Time.fixedDeltaTime);
-    }
+    private void FixedUpdate() => rigidbody2D.MovePosition(rigidbody2D.position + direction * Time.fixedDeltaTime);
 
     //private void AnimateSprite()
     //{
@@ -164,15 +165,13 @@ public class PlayerController : MonoBehaviour
         else if (collision.gameObject.CompareTag("Obstacle"))
         {
             enabled = false;
+
+            this.collider.enabled = false;
             
             animator.SetTrigger("DeathTrigger");
 
             gameManager.LevelFailed();
             
-
-            rigidbody2D.velocity = Vector2.zero;
-            rigidbody2D.gravityScale = 0;
-            rigidbody2D.simulated = false;
         }
 
     }
@@ -223,5 +222,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-}
 
+
+    public void RightButton()
+    {
+        rightPressed = true;
+
+    }
+
+    public void LeftButton()
+    {
+        leftPressed = true;
+    }
+
+
+}

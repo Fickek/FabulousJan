@@ -9,6 +9,8 @@ TagManager:
   - Ladder
   - Ground
   - Enemy
+  - BallSpawner
+  - Timeline
   layers:
   - Default
   - TransparentFX

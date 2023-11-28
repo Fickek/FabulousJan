@@ -6944,7 +6944,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   changeTime: 75
-  sceneName: GameplayScene
+  sceneName: Level_1
 --- !u!4 &1909150468
 Transform:
   m_ObjectHideFlags: 0

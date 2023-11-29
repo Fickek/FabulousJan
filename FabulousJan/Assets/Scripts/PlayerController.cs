@@ -6,14 +6,19 @@ using UnityEngine.InputSystem.HID;
 public class PlayerController : MonoBehaviour
 {
 
+
+    public enum InputController { NONE, PC, Mobile };
+
+    public InputController inputType;
+
     public GameManager gameManager;
 
-    private SpriteRenderer spriteRenderer;
+    //private SpriteRenderer spriteRenderer;
     //public Sprite[] runSprites;
     //public Sprite climbSprite;
-    private int spriteIndex;
+    //private int spriteIndex;
 
-    private new Rigidbody2D rigidbody2D;
+    private Rigidbody2D _rb;
     private new Collider2D collider;
 
     private Collider2D[] overlaps = new Collider2D[4];
@@ -29,14 +34,29 @@ public class PlayerController : MonoBehaviour
 
     internal Animator animator;
 
+    public float HorizontalValue 
+    { 
+        get 
+        { 
+            return horizontalValue;
+        }
+        set 
+        { 
+            horizontalValue = value;
+        }
+    }
 
-    private bool rightPressed, leftPressed;
+    float horizontalValue; 
+    //float verticalalValue = Input.GetAxis("Vertical");
+
+
+    //private bool rightPressed, leftPressed;
 
 
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        rigidbody2D = GetComponent<Rigidbody2D>();
+        //spriteRenderer = GetComponent<SpriteRenderer>();
+        _rb = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
     }
@@ -52,11 +72,35 @@ public class PlayerController : MonoBehaviour
     }
 
     private void Update()
-    {
-        CheckCollision();
+    {     
+
+        //Debug.Log(horizontalValue);
+
+        if (inputType == InputController.PC) 
+        {
+            PCHandle();
+        }
+        else if (inputType == InputController.Mobile)
+        {
+            //SetDirection();
+            MobileHandle();
+            
+        }
+
         SetDirection();
+        CheckCollision();
         AnimatePlayer();
     }
+    
+
+    public void pressBtnRight()
+    {
+        Debug.Log("Pressed");
+    }
+
+    private void FixedUpdate() => Move(horizontalValue);
+
+    //private void FixedUpdate() => rigidbody2D.MovePosition(rigidbody2D.position + direction * Time.fixedDeltaTime);
 
     private void CheckCollision()
     {
@@ -97,6 +141,15 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    private void PCHandle()
+    {
+        horizontalValue = Input.GetAxis("Horizontal");
+    }
+
+    private void MobileHandle()
+    {
+        
+    }
 
     private void SetDirection()
     {
@@ -113,8 +166,6 @@ public class PlayerController : MonoBehaviour
         {
             direction += Physics2D.gravity * Time.deltaTime;
         }
-
-        direction.x = Input.GetAxis("Horizontal") * moveSpeed;
 
         // Prevent gravity from building up infinitely
         if (grounded)
@@ -133,7 +184,18 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void FixedUpdate() => rigidbody2D.MovePosition(rigidbody2D.position + direction * Time.fixedDeltaTime);
+    void Move(float horizontalVal)
+    {
+        //direction.x = horizontalVal * moveSpeed;
+        
+        //_rb.MovePosition(_rb.position + direction * Time.fixedDeltaTime);
+
+        float xVal = horizontalVal * moveSpeed * 100 * Time.fixedDeltaTime;
+
+        Vector2 targetVelocity = new Vector2(xVal, _rb.velocity.y);
+        _rb.velocity = targetVelocity;
+
+    }
 
     //private void AnimateSprite()
     //{
@@ -221,19 +283,4 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Climb", climbing);
         }
     }
-
-
-
-    public void RightButton()
-    {
-        rightPressed = true;
-
-    }
-
-    public void LeftButton()
-    {
-        leftPressed = true;
-    }
-
-
 }

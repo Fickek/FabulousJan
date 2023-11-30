@@ -24,9 +24,9 @@ public class PlayerController : MonoBehaviour
     private Collider2D[] overlaps = new Collider2D[4];
     private Vector2 direction;
 
-    private bool grounded;
-    private bool climbing;
-    public bool jump;
+    public bool isGround = true;
+    private bool isClimb;
+    public bool isJump;
 
 
     public float moveSpeed = 3f;
@@ -34,20 +34,14 @@ public class PlayerController : MonoBehaviour
 
     internal Animator animator;
 
-    public float HorizontalValue 
-    { 
-        get 
-        { 
-            return horizontalValue;
-        }
-        set 
-        { 
-            horizontalValue = value;
-        }
-    }
+    //get and set horizontalValue if pressed button
+    public float HorizontalValue { get { return horizontalValue; } set { horizontalValue = value; } }
+    //get and set verticalValue if pressed button
+    public float VerticalValue { get { return verticalValue; } set { verticalValue = value; } }
 
     float horizontalValue; 
-    //float verticalalValue = Input.GetAxis("Vertical");
+    float verticalValue;
+    
 
 
     //private bool rightPressed, leftPressed;
@@ -104,12 +98,12 @@ public class PlayerController : MonoBehaviour
 
     private void CheckCollision()
     {
-        grounded = false;
-        climbing = false;
+        
+        isGround = false;
+        isClimb = false;
 
         //the amount that two colliders can overlap
         //increase this value for steeper platforms
-
         float skinWidth = 0.1f;
 
         Vector2 size = collider.bounds.size;
@@ -126,49 +120,54 @@ public class PlayerController : MonoBehaviour
             {
 
                 // Only set as grounded if the platform is below the player
-                grounded = hit.transform.position.y < (transform.position.y - 0.5f + skinWidth);
+                isGround = hit.transform.position.y < (transform.position.y - 0.5f + skinWidth);
 
                 // Turn off collision on platforms the player is not grounded to
-                Physics2D.IgnoreCollision(overlaps[i], collider, !grounded);
+                Physics2D.IgnoreCollision(overlaps[i], collider, !isGround);
             }
             else if (hit.layer == LayerMask.NameToLayer("Ladder"))
             {
-                climbing = true;
+                isClimb = true;
             }
-
         }
 
-
+        //animator.SetBool("Jump", !grounded);
     }
 
     private void PCHandle()
     {
         horizontalValue = Input.GetAxis("Horizontal");
+        verticalValue = Input.GetAxis("Vertical");
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            Jump();
+        }
+
     }
 
     private void MobileHandle()
     {
-        
+        //Debug.Log(horizontalValue);
     }
+
+    
 
     private void SetDirection()
     {
 
-        if (climbing)
+        if (isClimb && verticalValue > 0)
         {
-            direction.y = Input.GetAxis("Vertical") * moveSpeed;
-        } 
-        else if (grounded && Input.GetButtonDown("Jump"))
-        {
-            direction = Vector2.up * jumpStrength;
+            direction.y = verticalValue * moveSpeed;
         } 
         else
         {
+            // physics player to down
             direction += Physics2D.gravity * Time.deltaTime;
         }
 
         // Prevent gravity from building up infinitely
-        if (grounded)
+        if (isGround)
         {
             direction.y = Mathf.Max(direction.y, -1f);
         }
@@ -184,38 +183,37 @@ public class PlayerController : MonoBehaviour
 
     }
 
+
+    #region Jump
+    public void Jump()
+    {
+        isJump = true;
+
+        if (isGround && isJump)
+        {
+            direction = Vector2.up * jumpStrength;
+            isJump = false;
+
+        }
+    }
+    #endregion
+
     void Move(float horizontalVal)
     {
-        //direction.x = horizontalVal * moveSpeed;
+
+        direction.x = horizontalVal * moveSpeed;
         
-        //_rb.MovePosition(_rb.position + direction * Time.fixedDeltaTime);
+        _rb.MovePosition(_rb.position + direction * Time.fixedDeltaTime);
 
         float xVal = horizontalVal * moveSpeed * 100 * Time.fixedDeltaTime;
 
         Vector2 targetVelocity = new Vector2(xVal, _rb.velocity.y);
         _rb.velocity = targetVelocity;
 
+
+        animator.SetFloat("directionX", Mathf.Abs(_rb.velocity.x));
+
     }
-
-    //private void AnimateSprite()
-    //{
-    //    if (climbing)
-    //    {
-    //        spriteRenderer.sprite = climbSprite;
-    //    }
-    //    else if (direction.x != 0f)
-    //    {
-    //        spriteIndex++;
-
-    //        if (spriteIndex >= runSprites.Length) {
-    //            spriteIndex = 0;
-    //        }
-
-    //        if (spriteIndex > 0 && spriteIndex <= runSprites.Length) {
-    //            spriteRenderer.sprite = runSprites[spriteIndex];
-    //        }
-    //    }
-    //}
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -238,49 +236,29 @@ public class PlayerController : MonoBehaviour
 
     }
 
-
-
-
-
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.gameObject.tag == "Ladder")
-        {
-            //grounded = false;
-            //this.animator.SetInteger("AnimState", 1);
-        }
-    }
-
-
     private void AnimatePlayer()
     {
 
-        if (direction.x != 0f && grounded)
-        {
-            animator.SetBool("Ground", true);
-        }
-        else
-        {
-            animator.SetBool("Ground", false);
-        }
-
-        if ((Input.GetKey(KeyCode.Space) && grounded))
+        if (!isGround && !isClimb)
         {
             animator.SetBool("Jump", true);
         }
-        else if(grounded)
+        else 
         {
+            animator.SetBool("Climb", true);
             animator.SetBool("Jump", false);
         }
 
-        if (climbing)
+        if (verticalValue > 0 && isClimb)
         {
-            animator.SetBool("Climb", climbing);
-            animator.SetBool("Jump", false);
+            animator.SetBool("Climb", true);
         }
         else
         {
-            animator.SetBool("Climb", climbing);
+            animator.SetBool("Climb", false);
         }
     }
+
+
+
 }

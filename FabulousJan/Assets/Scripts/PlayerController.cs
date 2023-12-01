@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
@@ -41,10 +42,8 @@ public class PlayerController : MonoBehaviour
 
     float horizontalValue; 
     float verticalValue;
-    
 
-
-    //private bool rightPressed, leftPressed;
+    public AudioClip JumpAudio, WalkAudio;
 
 
     private void Awake()
@@ -84,12 +83,6 @@ public class PlayerController : MonoBehaviour
         SetDirection();
         CheckCollision();
         AnimatePlayer();
-    }
-    
-
-    public void pressBtnRight()
-    {
-        Debug.Log("Pressed");
     }
 
     private void FixedUpdate() => Move(horizontalValue);
@@ -138,6 +131,7 @@ public class PlayerController : MonoBehaviour
     {
         horizontalValue = Input.GetAxis("Horizontal");
         verticalValue = Input.GetAxis("Vertical");
+        //SoundManager.instance.PlaySoundFX(JumpAudio, 0.5f);
 
         if (Input.GetButtonDown("Jump"))
         {
@@ -192,14 +186,15 @@ public class PlayerController : MonoBehaviour
         if (isGround && isJump)
         {
             direction = Vector2.up * jumpStrength;
+            SoundManager.instance.PlaySoundFX(JumpAudio, 0.5f);
             isJump = false;
-
         }
     }
     #endregion
 
     void Move(float horizontalVal)
     {
+        //SoundManager.instance.PlaySoundFX(WalkAudio, 0.5f);
 
         direction.x = horizontalVal * moveSpeed;
         

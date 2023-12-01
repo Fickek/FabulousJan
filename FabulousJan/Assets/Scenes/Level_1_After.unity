@@ -243,6 +243,8 @@ PlayableDirector:
     value: {fileID: 453532711}
   - key: {fileID: 7734306140282133320, guid: 08c49b009d38a484bad7c013f50fd691, type: 2}
     value: {fileID: 542424362}
+  - key: {fileID: -4255843585854431153, guid: 08c49b009d38a484bad7c013f50fd691, type: 2}
+    value: {fileID: 0}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &92216329
@@ -2790,7 +2792,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ballSpawner: {fileID: 453532711}
-  timeline: {fileID: 92216327}
+  controlPanel: {fileID: 0}
 --- !u!4 &1301968635 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 616779503215884886, guid: 1bb423653e9cb5940aa6166ae16f6f9c, type: 3}
@@ -3114,7 +3116,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 616779503215884904, guid: 1bb423653e9cb5940aa6166ae16f6f9c, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.y
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 616779503215884905, guid: 1bb423653e9cb5940aa6166ae16f6f9c, type: 3}
       propertyPath: m_Name
@@ -3700,6 +3702,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4319012b82271ac41b6e7558f487f32d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nextScene: 
 --- !u!4 &1884158260
 Transform:
   m_ObjectHideFlags: 0

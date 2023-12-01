@@ -6,12 +6,7 @@ using UnityEngine.SceneManagement;
 public class MenuManager : MonoBehaviour
 {
 
-    string loadScene = "Intro";
+    [SerializeField] private string loadScene = "Intro";
+    public void NextLevel() => SceneManager.LoadScene(loadScene);
 
-    public void PlayIntro()
-    {
-        SceneManager.LoadScene(loadScene);
-        Debug.Log("play");
-
-    }
 }

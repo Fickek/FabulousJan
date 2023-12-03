@@ -319,7 +319,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7007505405247459222, guid: cc7e21b83437fbd48ad7a6898b1eca4d, type: 3}
       propertyPath: m_Size.x
-      value: 2.086025
+      value: 2.076065
       objectReference: {fileID: 0}
     - target: {fileID: 7007505405247459222, guid: cc7e21b83437fbd48ad7a6898b1eca4d, type: 3}
       propertyPath: m_Size.y
@@ -327,7 +327,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7007505405247459222, guid: cc7e21b83437fbd48ad7a6898b1eca4d, type: 3}
       propertyPath: m_Offset.x
-      value: 0.5285822
+      value: 0.523602
       objectReference: {fileID: 0}
     - target: {fileID: 7007505405247459222, guid: cc7e21b83437fbd48ad7a6898b1eca4d, type: 3}
       propertyPath: m_Offset.y
@@ -398,7 +398,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 180877512, guid: 3e7b2bbe71d12614284acb1ea3cca4bc, type: 3}
       propertyPath: inputType
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 180877512, guid: 3e7b2bbe71d12614284acb1ea3cca4bc, type: 3}
       propertyPath: gameManager
@@ -3298,7 +3298,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7007505405247459217, guid: cc7e21b83437fbd48ad7a6898b1eca4d, type: 3}
   m_PrefabInstance: {fileID: 115335107}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1280704193
+--- !u!114 &1280704190
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3310,8 +3310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30ea543132a596e4fa8d1a8bfff0eb00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballSpawner: {fileID: 453532711}
-  controlPanel: {fileID: 92216327}
+  sceneName: Level_2
 --- !u!4 &1301968635 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 616779503215884886, guid: 1bb423653e9cb5940aa6166ae16f6f9c, type: 3}

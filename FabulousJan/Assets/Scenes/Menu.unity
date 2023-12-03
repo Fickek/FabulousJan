@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 219442068}
   - component: {fileID: 219442067}
   m_Layer: 5
-  m_Name: RestartButton
+  m_Name: QuitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -239,7 +239,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8c5e86cfd2b92d545bde5398255efa32, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 97f937b0245801e4285c35d2bb0c3e29, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -373,7 +373,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8c5e86cfd2b92d545bde5398255efa32, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 97f937b0245801e4285c35d2bb0c3e29, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -403,7 +403,7 @@ GameObject:
   - component: {fileID: 518267802}
   - component: {fileID: 518267801}
   m_Layer: 5
-  m_Name: RestartText
+  m_Name: QuitText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -449,7 +449,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Restart
+  m_text: Quit
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6ff69a199436cdd44843b6f1cbaaf1e5, type: 2}
   m_sharedMaterial: {fileID: 1670884820977594180, guid: 6ff69a199436cdd44843b6f1cbaaf1e5, type: 2}
@@ -476,8 +476,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45
-  m_fontSizeBase: 45
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 0
@@ -682,7 +682,7 @@ GameObject:
   - component: {fileID: 684073386}
   - component: {fileID: 684073385}
   m_Layer: 5
-  m_Name: PauseText
+  m_Name: TutorialText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -728,7 +728,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Pause
+  m_text: Tutorial
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6ff69a199436cdd44843b6f1cbaaf1e5, type: 2}
   m_sharedMaterial: {fileID: 1670884820977594180, guid: 6ff69a199436cdd44843b6f1cbaaf1e5, type: 2}
@@ -755,8 +755,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60
-  m_fontSizeBase: 60
+  m_fontSize: 45
+  m_fontSizeBase: 45
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 0
@@ -1227,7 +1227,7 @@ GameObject:
   - component: {fileID: 1074957086}
   - component: {fileID: 1074957085}
   m_Layer: 5
-  m_Name: Pause
+  m_Name: Tutorial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1252,7 +1252,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -166}
-  m_SizeDelta: {x: 300, y: 156.25}
+  m_SizeDelta: {x: 300, y: 159.375}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1074957085
 MonoBehaviour:
@@ -1330,7 +1330,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8c5e86cfd2b92d545bde5398255efa32, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 97f937b0245801e4285c35d2bb0c3e29, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1508,7 +1508,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1402881228}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1665,7 +1665,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4319012b82271ac41b6e7558f487f32d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextScene: IntroScene
 --- !u!4 &1884158260
 Transform:
   m_ObjectHideFlags: 0

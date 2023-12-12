@@ -13,8 +13,9 @@ public class SceneChanger : MonoBehaviour
     void Update() 
     {
         changeTime -= Time.deltaTime;
-        if (changeTime <= 0) SceneManager.LoadScene(sceneName);
+        if (changeTime <= 0 && sceneName != null) SceneManager.LoadScene(sceneName);
     }
 
+    public void SkipCutScene() => SceneManager.LoadScene(sceneName);
 
 }

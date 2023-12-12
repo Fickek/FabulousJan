@@ -7,8 +7,15 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 
+    public static GameManager instance;
+
     private int _lives;
     private int _score;
+
+    [SerializeField] private string playLevel = "";
+    [SerializeField] private string tutorialScene = "";
+    [SerializeField] private string menuScene = "";
+
 
     private void Start()
     {
@@ -42,8 +49,14 @@ public class GameManager : MonoBehaviour
 
         
     }
-    public void RestartLevel() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    public void PauseLevel() => Time.timeScale = 0;
-    public void PlayLevel() => Time.timeScale = 1;
+    public static void RestartLevel() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+    //public void PauseLevel() => Time.timeScale = 0;
+    //public void PlayLevel() => Time.timeScale = 1;
+
+    public void PlayLevel() => SceneManager.LoadScene(playLevel);
+    public void TutorialScene() => SceneManager.LoadScene(tutorialScene);
+    public void MenuScene() => SceneManager.LoadScene(menuScene);
+    public void QuitGame() => Application.Quit();
 
 }

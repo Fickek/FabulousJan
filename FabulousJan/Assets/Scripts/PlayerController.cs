@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Events;
@@ -12,7 +13,7 @@ public class PlayerController : MonoBehaviour
 
     public InputController inputType;
 
-    public GameManager gameManager;
+    //public GameManager gameManager;
 
     //private SpriteRenderer spriteRenderer;
     //public Sprite[] runSprites;
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour
     public bool isGround = true;
     private bool isClimb;
     public bool isJump;
+    public bool isDeath = false;
 
 
     public float moveSpeed = 3f;
@@ -45,6 +47,7 @@ public class PlayerController : MonoBehaviour
 
     public AudioClip JumpAudio, WalkAudio;
 
+    public float waitAfterDeath;
 
     private void Awake()
     {
@@ -52,37 +55,36 @@ public class PlayerController : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
-    }
-
-    private void OnEnable()
-    {
-        //InvokeRepeating(nameof(AnimateSprite), 1f/12f, 1f/12f);
-    }
-
-    private void OnDisable()
-    {
-        //CancelInvoke();
+        //isDeath = false;
     }
 
     private void Update()
-    {     
+    {
+
+        if (isDeath)
+        {
+            return;
+        }
+        else 
+        {
+            if (inputType == InputController.PC)
+            {
+                PCHandle();
+            }
+            else if (inputType == InputController.Mobile)
+            {
+                //SetDirection();
+                MobileHandle();
+
+            }
+
+            SetDirection();
+            CheckCollision();
+            AnimatePlayer();
+        }
 
         //Debug.Log(horizontalValue);
 
-        if (inputType == InputController.PC) 
-        {
-            PCHandle();
-        }
-        else if (inputType == InputController.Mobile)
-        {
-            //SetDirection();
-            MobileHandle();
-            
-        }
-
-        SetDirection();
-        CheckCollision();
-        AnimatePlayer();
     }
 
     private void FixedUpdate() => Move(horizontalValue);
@@ -156,7 +158,7 @@ public class PlayerController : MonoBehaviour
         } 
         else
         {
-            // physics player to down
+            // physics on player
             direction += Physics2D.gravity * Time.deltaTime;
         }
 
@@ -205,9 +207,6 @@ public class PlayerController : MonoBehaviour
         Vector2 targetVelocity = new Vector2(xVal, _rb.velocity.y);
         _rb.velocity = targetVelocity;
 
-
-        animator.SetFloat("directionX", Mathf.Abs(_rb.velocity.x));
-
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -222,14 +221,23 @@ public class PlayerController : MonoBehaviour
             enabled = false;
 
             this.collider.enabled = false;
-            
-            animator.SetTrigger("DeathTrigger");
 
-            gameManager.LevelFailed();
-            
+            _rb.velocity = Vector2.zero;
+
+            isDeath = true;
+            animator.SetBool("Death", true);
+            StartCoroutine(CoroutineDeath(waitAfterDeath));
+
         }
-
     }
+
+    private IEnumerator CoroutineDeath(float wait)
+    {
+        Debug.Log("Wait 5 sec");
+        yield return new WaitForSeconds(5);
+        GameManager.RestartLevel();
+    }
+
 
     private void AnimatePlayer()
     {
@@ -252,8 +260,16 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("Climb", false);
         }
+
+        if(isDeath) 
+        {
+            animator.SetBool("Death", true);
+        }
+        else 
+        {
+            animator.SetBool("Death", false);
+            animator.SetFloat("directionX", Mathf.Abs(_rb.velocity.x));
+        }
+
     }
-
-
-
 }

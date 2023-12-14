@@ -9,6 +9,10 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
 
+    [SerializeField] private GameObject spawnPoint;
+
+    [SerializeField] private GameObject playerPrefab;
+
     private int _lives;
     private int _score;
 
@@ -17,9 +21,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private string menuScene = "";
 
 
-    private void Start()
+    private void Awake()
     {
         NewGame();
+        MakeSingelton();
     }
 
     private void NewGame()
@@ -32,6 +37,19 @@ public class GameManager : MonoBehaviour
     {
         _score += 1000;
         //Load new level
+    }
+
+    void MakeSingelton()
+    {
+        if (instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
     }
 
     public void LevelFailed()
@@ -49,7 +67,9 @@ public class GameManager : MonoBehaviour
 
         
     }
-    public static void RestartLevel() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    //public void RestartLevel() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    public void RestartLevel() => Instantiate(playerPrefab, new Vector2(spawnPoint.transform.position.x, spawnPoint.transform.position.y), Quaternion.identity);
+     
 
     //public void PauseLevel() => Time.timeScale = 0;
     //public void PlayLevel() => Time.timeScale = 1;

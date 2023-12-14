@@ -8,7 +8,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 9204803576661565444}
+  - component: {fileID: 6765076195522158573}
   - component: {fileID: 8060833090512745028}
   - component: {fileID: 8060833090512745029}
   - component: {fileID: 8060833090512745018}
@@ -21,26 +21,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &9204803576661565444
-RectTransform:
+--- !u!4 &6765076195522158573
+Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8060833090512745019}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -5.15, y: -5.51, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -5.15, y: -3.293}
-  m_SizeDelta: {x: 0.625, y: 1}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &8060833090512745028
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -107,12 +102,12 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0
-  m_GravityScale: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!70 &8060833090512745018
 CapsuleCollider2D:
@@ -163,7 +158,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cba5db83f9161048b4c2b83628aafcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
-  jump: 0
+  inputType: 1
+  isGround: 1
+  isJump: 0
+  isDeath: 0
   moveSpeed: 3
   jumpStrength: 4
+  JumpAudio: {fileID: 8300000, guid: df22c1dd93abfe8478da70cb58d3180f, type: 3}
+  WalkAudio: {fileID: 0}
+  DeathAudio: {fileID: 8300000, guid: 9e9e625d3fc017f47a4b9cd73ebcf517, type: 3}
+  waitAfterDeath: 5

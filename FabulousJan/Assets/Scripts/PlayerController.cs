@@ -7,11 +7,11 @@ using UnityEngine.InputSystem.HID;
 
 public class PlayerController : MonoBehaviour
 {
-
-
     public enum InputController { NONE, PC, Mobile };
 
     public InputController inputType;
+
+    //public Vector2 deathKick = new Vector2(250f, 250f);
 
     //public GameManager gameManager;
 
@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
     float horizontalValue; 
     float verticalValue;
 
-    public AudioClip JumpAudio, WalkAudio;
+    public AudioClip JumpAudio, WalkAudio, DeathAudio;
 
     public float waitAfterDeath;
 
@@ -218,14 +218,28 @@ public class PlayerController : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Obstacle"))
         {
+            animator.SetBool("Death", true);
+
+            float randomKickX = Random.Range(-7, 7);
+            float randomKickY = Random.Range(5, 8);
+
+            Debug.Log($"randomKickX: {randomKickX}");
+            Debug.Log($"randomKickY: {randomKickY}");
+
+            Vector2 deathKick = new Vector2(randomKickX, randomKickY);
+
+
+            SoundManager.instance.PlaySoundFX(DeathAudio, 1f);
+
             enabled = false;
 
             this.collider.enabled = false;
 
-            _rb.velocity = Vector2.zero;
+            _rb.velocity = deathKick;
+            //_rb.velocity = Vector2.zero;
 
             isDeath = true;
-            animator.SetBool("Death", true);
+            
             StartCoroutine(CoroutineDeath(waitAfterDeath));
 
         }
@@ -234,8 +248,10 @@ public class PlayerController : MonoBehaviour
     private IEnumerator CoroutineDeath(float wait)
     {
         Debug.Log("Wait 5 sec");
-        yield return new WaitForSeconds(5);
-        GameManager.RestartLevel();
+        yield return new WaitForSeconds(5);     
+        GameManager.instance.RestartLevel(); // Restart Level     
+        //GameManager.RestartLevel(); // Restart Level     
+        Destroy(gameObject);
     }
 
 

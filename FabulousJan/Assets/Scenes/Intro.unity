@@ -3415,5 +3415,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenuUI: {fileID: 2027013331}
   MobileController: {fileID: 0}
-  effectSound: {fileID: 8300000, guid: 0b25b038f39b3694d9d5253cd45e9243, type: 3}
+  effectClickSound: {fileID: 8300000, guid: 0b25b038f39b3694d9d5253cd45e9243, type: 3}
   effectVHSSound: {fileID: 8300000, guid: 7e387eb6ff193b14ebbcca56cf0c4f77, type: 3}

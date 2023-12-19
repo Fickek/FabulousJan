@@ -5,32 +5,26 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
 
-    public static SoundManager instance;
-    private AudioSource _audioFX;
-    [SerializeField] private AudioSource _audioEnv;
+    public static SoundManager Instance;
+
+    [SerializeField] private AudioSource _musicSource, _effectSource;
+
     public bool sound = true;
 
     void Awake()
     {
         MakeSingelton();
-        _audioFX = GetComponent<AudioSource>();
-        _audioEnv = GetComponent<AudioSource>();
-    }
-
-    private void Update()
-    {
-        PlaySoundEnv();
     }
 
     void MakeSingelton()
     {
-        if (instance != null)
+        if (Instance != null)
         {
             Destroy(gameObject);
         }
         else
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject);
         }
     }
@@ -42,13 +36,25 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySoundFX(AudioClip clip, float volume)
     {
-        if (sound)
-            _audioFX.PlayOneShot(clip, volume);        
+        if (sound) _effectSource.PlayOneShot(clip, volume);    
+        
+        if(UI.isGamePaused) 
+        {
+            _effectSource.ignoreListenerPause = true;
+            _musicSource.ignoreListenerPause = true;
+        }
+        else 
+        {
+            _effectSource.ignoreListenerPause = false;
+            _musicSource.ignoreListenerPause = false;
+        }
+
     }
 
-    public void PlaySoundEnv()
+    public void PlaySoundEnv(AudioClip clip)
     {
-            _audioEnv.Play();
+        _musicSource.PlayOneShot(clip);
     }
+
 
 }

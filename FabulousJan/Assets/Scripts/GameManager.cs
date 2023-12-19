@@ -7,11 +7,11 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 
-    public static GameManager instance;
+    public GameManager Instance;
 
-    [SerializeField] private GameObject spawnPoint;
+    //[SerializeField] private GameObject spawnPoint;
 
-    [SerializeField] private GameObject playerPrefab;
+    //[SerializeField] private GameObject playerPrefab;
 
     private int _lives;
     private int _score;
@@ -23,52 +23,25 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        NewGame();
-        MakeSingelton();
-    }
-
-    private void NewGame()
-    {
-        _score = 0;
-        _lives = 3;
-    }
-
-    public void LevelComplete() 
-    {
-        _score += 1000;
-        //Load new level
+        //MakeSingelton();
     }
 
     void MakeSingelton()
     {
-        if (instance != null)
+        if (Instance != null)
         {
             Destroy(gameObject);
         }
         else
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject);
         }
     }
 
-    public void LevelFailed()
-    {
-        //_lives--;
 
-        if (_lives <= 0)
-        {
-            //RestartLevel();
-        }
-        else 
-        {
-            RestartLevel();
-        }
-
-        
-    }
     //public void RestartLevel() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    public void RestartLevel() => Instantiate(playerPrefab, new Vector2(spawnPoint.transform.position.x, spawnPoint.transform.position.y), Quaternion.identity);
+    //public void RestartLevel() => Instantiate(playerPrefab, new Vector2(spawnPoint.transform.position.x, spawnPoint.transform.position.y), Quaternion.identity);
      
 
     //public void PauseLevel() => Time.timeScale = 0;

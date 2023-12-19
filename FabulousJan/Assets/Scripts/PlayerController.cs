@@ -4,6 +4,7 @@ using UnityEngine.Audio;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
+using static UnityEngine.AudioSettings;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class PlayerController : MonoBehaviour
 
     public InputController inputType;
 
+    //public static bool isMobile = false;
+
+    public GameObject pokeballPrefab;
     //public Vector2 deathKick = new Vector2(250f, 250f);
 
     //public GameManager gameManager;
@@ -30,6 +34,8 @@ public class PlayerController : MonoBehaviour
     private bool isClimb;
     public bool isJump;
     public bool isDeath = false;
+
+    private bool isSpawn;
 
 
     public float moveSpeed = 3f;
@@ -57,6 +63,26 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         //isDeath = false;
     }
+
+    void Start()
+    {
+        Debug.Log("Spawn Player");
+        isSpawn = true;
+        //StartCoroutine(CoroutineSpawn());
+    }
+
+    private IEnumerator CoroutineSpawn()
+    {
+        Debug.Log("Wait 5 sec");
+        //Physics2D.IgnoreCollision(collider, pokeballPrefab.GetComponent<Collider2D>(), true);
+
+        yield return new WaitForSeconds(5);
+
+        //Physics2D.IgnoreCollision(collider, pokeballPrefab.GetComponent<Collider2D>(), false);
+
+        isSpawn = false;
+    }
+
 
     private void Update()
     {
@@ -131,6 +157,8 @@ public class PlayerController : MonoBehaviour
 
     private void PCHandle()
     {
+        //isMobile = false;
+
         horizontalValue = Input.GetAxis("Horizontal");
         verticalValue = Input.GetAxis("Vertical");
         //SoundManager.instance.PlaySoundFX(JumpAudio, 0.5f);
@@ -144,6 +172,8 @@ public class PlayerController : MonoBehaviour
 
     private void MobileHandle()
     {
+        //isMobile = true;
+
         //Debug.Log(horizontalValue);
     }
 
@@ -188,7 +218,7 @@ public class PlayerController : MonoBehaviour
         if (isGround && isJump)
         {
             direction = Vector2.up * jumpStrength;
-            SoundManager.instance.PlaySoundFX(JumpAudio, 0.5f);
+            SoundManager.Instance.PlaySoundFX(JumpAudio, 0.5f);
             isJump = false;
         }
     }
@@ -218,6 +248,8 @@ public class PlayerController : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Obstacle"))
         {
+            //if (isSpawn) return;
+
             animator.SetBool("Death", true);
 
             float randomKickX = Random.Range(-7, 7);
@@ -229,7 +261,7 @@ public class PlayerController : MonoBehaviour
             Vector2 deathKick = new Vector2(randomKickX, randomKickY);
 
 
-            SoundManager.instance.PlaySoundFX(DeathAudio, 1f);
+            SoundManager.Instance.PlaySoundFX(DeathAudio, 1f);
 
             enabled = false;
 
@@ -247,10 +279,10 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator CoroutineDeath(float wait)
     {
-        Debug.Log("Wait 5 sec");
-        yield return new WaitForSeconds(5);     
-        GameManager.instance.RestartLevel(); // Restart Level     
-        //GameManager.RestartLevel(); // Restart Level     
+        Debug.Log($"Wait {wait} sec");
+        yield return new WaitForSeconds(wait);     
+        //GameManager.instance.RestartLevel(); // Restart Level     
+        SpawnPlayer.instance.SpawnPlayerToPointPosition();
         Destroy(gameObject);
     }
 

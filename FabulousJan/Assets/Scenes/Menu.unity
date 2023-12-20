@@ -1314,10 +1314,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 508ea15772804ac4c8d17e2648f62125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGamePaused: 0
   pauseMenuUI: {fileID: 0}
   MobileController: {fileID: 0}
-  effectSound: {fileID: 8300000, guid: 0b25b038f39b3694d9d5253cd45e9243, type: 3}
+  effectClickSound: {fileID: 8300000, guid: 0b25b038f39b3694d9d5253cd45e9243, type: 3}
+  effectVHSSound: {fileID: 0}
 --- !u!1 &1027209967
 GameObject:
   m_ObjectHideFlags: 0
@@ -6721,6 +6721,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4319012b82271ac41b6e7558f487f32d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Instance: {fileID: 0}
   playLevel: Level_1_Intro_0
   tutorialScene: TutorialScene
   menuScene: Menu

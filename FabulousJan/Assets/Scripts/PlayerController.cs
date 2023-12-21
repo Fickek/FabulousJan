@@ -14,15 +14,21 @@ public class PlayerController : MonoBehaviour
 
     //public static bool isMobile = false;
 
+    public AudioSource _audioWalkSource;
+
     public GameObject pokeballPrefab;
     //public Vector2 deathKick = new Vector2(250f, 250f);
 
     //public GameManager gameManager;
 
-    //private SpriteRenderer spriteRenderer;
+
     //public Sprite[] runSprites;
     //public Sprite climbSprite;
     //private int spriteIndex;
+
+
+    private SpriteRenderer _spriteRenderer;
+
 
     private Rigidbody2D _rb;
     private new Collider2D collider;
@@ -35,7 +41,7 @@ public class PlayerController : MonoBehaviour
     public bool isJump;
     public bool isDeath = false;
 
-    private bool isSpawn;
+    public bool isSpawn;
 
 
     public float moveSpeed = 3f;
@@ -54,35 +60,47 @@ public class PlayerController : MonoBehaviour
     public AudioClip JumpAudio, WalkAudio, DeathAudio;
 
     public float waitAfterDeath;
+    public float waitImmortalityTime;
+
 
     private void Awake()
     {
-        //spriteRenderer = GetComponent<SpriteRenderer>();
         _rb = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
-        //isDeath = false;
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Start()
     {
         Debug.Log("Spawn Player");
+        Debug.Log(isSpawn);
         isSpawn = true;
-        //StartCoroutine(CoroutineSpawn());
+        StartCoroutine(CoroutineSpawn(waitImmortalityTime));
     }
 
-    private IEnumerator CoroutineSpawn()
+    private IEnumerator CoroutineSpawn(float wait)
     {
-        Debug.Log("Wait 5 sec");
-        //Physics2D.IgnoreCollision(collider, pokeballPrefab.GetComponent<Collider2D>(), true);
+        //Debug.Log($"Wait {wait} sec");
 
-        yield return new WaitForSeconds(5);
+        //int counter = 0;
+        _spriteRenderer.color = Color.green;
+        //while(counter <= wait) 
+        //{
+        //    Debug.Log(counter);
+        //    _spriteRenderer.color = Color.green;
+        //    counter++;
+        //}
+        //_spriteRenderer.color = new Color(1, 1, 1);
 
-        //Physics2D.IgnoreCollision(collider, pokeballPrefab.GetComponent<Collider2D>(), false);
+        yield return new WaitForSeconds(wait); //delay after spawn
 
+        _spriteRenderer.color = new Color(1, 1, 1);
+
+        //Debug.Log("Coroutine end");
+        //Debug.Log(isSpawn);
         isSpawn = false;
     }
-
 
     private void Update()
     {
@@ -111,11 +129,17 @@ public class PlayerController : MonoBehaviour
 
         //Debug.Log(horizontalValue);
 
+        if (Mathf.Abs(horizontalValue) > 0f)
+        {
+            //_audioWalkSource.Play();
+
+            
+
+        }
+
     }
 
     private void FixedUpdate() => Move(horizontalValue);
-
-    //private void FixedUpdate() => rigidbody2D.MovePosition(rigidbody2D.position + direction * Time.fixedDeltaTime);
 
     private void CheckCollision()
     {
@@ -161,7 +185,6 @@ public class PlayerController : MonoBehaviour
 
         horizontalValue = Input.GetAxis("Horizontal");
         verticalValue = Input.GetAxis("Vertical");
-        //SoundManager.instance.PlaySoundFX(JumpAudio, 0.5f);
 
         if (Input.GetButtonDown("Jump"))
         {
@@ -176,8 +199,6 @@ public class PlayerController : MonoBehaviour
 
         //Debug.Log(horizontalValue);
     }
-
-    
 
     private void SetDirection()
     {
@@ -226,7 +247,7 @@ public class PlayerController : MonoBehaviour
 
     void Move(float horizontalVal)
     {
-        //SoundManager.instance.PlaySoundFX(WalkAudio, 0.5f);
+
 
         direction.x = horizontalVal * moveSpeed;
         
@@ -235,6 +256,7 @@ public class PlayerController : MonoBehaviour
         float xVal = horizontalVal * moveSpeed * 100 * Time.fixedDeltaTime;
 
         Vector2 targetVelocity = new Vector2(xVal, _rb.velocity.y);
+
         _rb.velocity = targetVelocity;
 
     }
@@ -246,10 +268,14 @@ public class PlayerController : MonoBehaviour
             enabled = false;
             //gameManager.LevelComplete();
         }
+        else if(isSpawn && collision.gameObject.CompareTag("Obstacle"))
+        {
+
+            Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
+
+        }
         else if (collision.gameObject.CompareTag("Obstacle"))
         {
-            //if (isSpawn) return;
-
             animator.SetBool("Death", true);
 
             float randomKickX = Random.Range(-7, 7);
@@ -271,7 +297,7 @@ public class PlayerController : MonoBehaviour
             //_rb.velocity = Vector2.zero;
 
             isDeath = true;
-            
+
             StartCoroutine(CoroutineDeath(waitAfterDeath));
 
         }

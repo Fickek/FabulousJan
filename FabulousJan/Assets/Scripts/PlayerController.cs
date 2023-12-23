@@ -63,6 +63,8 @@ public class PlayerController : MonoBehaviour
     public float waitImmortalityTime;
 
 
+    private Vector3 startPos;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -72,11 +74,46 @@ public class PlayerController : MonoBehaviour
     }
 
     void Start()
-    {
+    {     
+        startPos = transform.position;
         Debug.Log("Spawn Player");
-        Debug.Log(isSpawn);
         isSpawn = true;
-        StartCoroutine(CoroutineSpawn(waitImmortalityTime));
+    }
+
+    private void Update()
+    {
+
+        if (isDeath)
+        {
+            return;
+        }
+        else 
+        {
+            if (inputType == InputController.PC)
+            {
+                PCHandle();
+            }
+            else if (inputType == InputController.Mobile)
+            {
+                MobileHandle();
+            }
+
+            SetDirection();
+            CheckCollision();
+            AnimatePlayer();
+        }
+
+
+        //if (Mathf.Abs(horizontalValue) > 0f)
+        //{
+        //    _audioWalkSource.Play();   
+        //}
+
+        if(isSpawn) 
+        {
+            StartCoroutine(CoroutineSpawn(waitImmortalityTime));
+        }
+
     }
 
     private IEnumerator CoroutineSpawn(float wait)
@@ -100,43 +137,6 @@ public class PlayerController : MonoBehaviour
         //Debug.Log("Coroutine end");
         //Debug.Log(isSpawn);
         isSpawn = false;
-    }
-
-    private void Update()
-    {
-
-        if (isDeath)
-        {
-            return;
-        }
-        else 
-        {
-            if (inputType == InputController.PC)
-            {
-                PCHandle();
-            }
-            else if (inputType == InputController.Mobile)
-            {
-                //SetDirection();
-                MobileHandle();
-
-            }
-
-            SetDirection();
-            CheckCollision();
-            AnimatePlayer();
-        }
-
-        //Debug.Log(horizontalValue);
-
-        if (Mathf.Abs(horizontalValue) > 0f)
-        {
-            //_audioWalkSource.Play();
-
-            
-
-        }
-
     }
 
     private void FixedUpdate() => Move(horizontalValue);
@@ -176,7 +176,6 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        //animator.SetBool("Jump", !grounded);
     }
 
     private void PCHandle()
@@ -266,7 +265,6 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Objective"))
         {
             enabled = false;
-            //gameManager.LevelComplete();
         }
         else if(isSpawn && collision.gameObject.CompareTag("Obstacle"))
         {
@@ -294,7 +292,6 @@ public class PlayerController : MonoBehaviour
             this.collider.enabled = false;
 
             _rb.velocity = deathKick;
-            //_rb.velocity = Vector2.zero;
 
             isDeath = true;
 
@@ -306,15 +303,33 @@ public class PlayerController : MonoBehaviour
     private IEnumerator CoroutineDeath(float wait)
     {
         Debug.Log($"Wait {wait} sec");
-        yield return new WaitForSeconds(wait);     
-        //GameManager.instance.RestartLevel(); // Restart Level     
-        SpawnPlayer.instance.SpawnPlayerToPointPosition();
-        Destroy(gameObject);
+        yield return new WaitForSeconds(wait);
+        Spawn();
+    }
+
+    void Spawn() 
+    {
+        //animator.SetBool("Death", false);
+        transform.position = startPos;
+        this.collider.enabled = true;
+        isDeath = false;
+        enabled = true;
+        isSpawn = true;
     }
 
 
     private void AnimatePlayer()
     {
+
+
+        if (isSpawn)
+        {
+            animator.SetBool("Spawn", true);
+        }
+        else
+        {
+            animator.SetBool("Spawn", false);
+        }
 
         if (!isGround && !isClimb)
         {

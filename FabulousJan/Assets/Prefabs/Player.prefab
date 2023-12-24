@@ -158,13 +158,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cba5db83f9161048b4c2b83628aafcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputType: 1
+  inputType: 2
+  _audioWalkSource: {fileID: 0}
+  pokeballPrefab: {fileID: 4063830648516391298, guid: 9da3df476f017814596f9ceb7c3c58f6, type: 3}
   isGround: 1
   isJump: 0
   isDeath: 0
+  isSpawn: 0
   moveSpeed: 3
   jumpStrength: 4
   JumpAudio: {fileID: 8300000, guid: df22c1dd93abfe8478da70cb58d3180f, type: 3}
   WalkAudio: {fileID: 0}
   DeathAudio: {fileID: 8300000, guid: 9e9e625d3fc017f47a4b9cd73ebcf517, type: 3}
   waitAfterDeath: 5
+  waitImmortalityTime: 3

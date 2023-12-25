@@ -5,22 +5,20 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
 
-    [SerializeField] private GameObject _spawner;
-    [SerializeField] private float _minTime = 2f;
-    [SerializeField] private float _maxTime = 4f;
-
+    [SerializeField] private GameObject _barrelSpawner;          
     [SerializeField] private float _averageTime = 3f;
 
-    private void Start()
-    {
-        Spawn();
-    }
+    private float _timer = 3;
 
-
-    private void Spawn()
+    private void Update()
     {
-        Instantiate(_spawner, transform.position, Quaternion.identity);
-        Invoke(nameof(Spawn), _averageTime);
+        _timer += Time.deltaTime;
+        if(_timer >= _averageTime) 
+        {
+            Instantiate(_barrelSpawner, transform.position, Quaternion.identity);
+            _timer -= _averageTime;
+        }
+       
     }
 
 }

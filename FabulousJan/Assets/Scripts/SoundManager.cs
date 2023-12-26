@@ -36,9 +36,9 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySoundFX(AudioClip clip, float volume)
     {
-        if (sound) _effectSource.PlayOneShot(clip, volume);    
-        
-        if(UI.isGamePaused) 
+        if (sound) _effectSource.PlayOneShot(clip, volume);
+
+        if (UI.isGamePaused) 
         {
             _effectSource.ignoreListenerPause = true;
             _musicSource.ignoreListenerPause = true;
@@ -55,6 +55,5 @@ public class SoundManager : MonoBehaviour
     {
         _musicSource.PlayOneShot(clip);
     }
-
 
 }

@@ -13,6 +13,7 @@ public class UI : MonoBehaviour
 
     [SerializeField] private AudioClip effectClickSound;
     [SerializeField] private AudioClip effectVHSSound;
+    [SerializeField] private AudioClip effectWalkSound;
 
     public void Resume() 
     {
@@ -21,7 +22,6 @@ public class UI : MonoBehaviour
         isGamePaused = false;
 
         AudioListener.pause = false;
-
     }
 
     public void Pause() 
@@ -34,12 +34,17 @@ public class UI : MonoBehaviour
 
     }
 
+    private void OnEnable()
+    {
+        playSoundEnviroment();
+    }
+
     public void playSoundEffect() 
     {
         SoundManager.Instance.PlaySoundFX(effectClickSound, 1f);
     }
 
-    public void playSoundEnviroment()
+    public void playSoundEnviroment() 
     {
         if(isGamePaused) SoundManager.Instance.PlaySoundEnv(effectVHSSound);
     }

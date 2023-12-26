@@ -62,8 +62,11 @@ public class PlayerController : MonoBehaviour
     public float waitAfterDeath;
     public float waitImmortalityTime;
 
-
     private Vector3 startPos;
+    private Quaternion startRot;
+
+
+    [SerializeField] private GameObject blink;
 
     private void Awake()
     {
@@ -76,8 +79,9 @@ public class PlayerController : MonoBehaviour
     void Start()
     {     
         startPos = transform.position;
+        startRot = transform.rotation;
         Debug.Log("Spawn Player");
-        isSpawn = true;
+        Spawn();
     }
 
     private void Update()
@@ -102,41 +106,6 @@ public class PlayerController : MonoBehaviour
             CheckCollision();
             AnimatePlayer();
         }
-
-
-        //if (Mathf.Abs(horizontalValue) > 0f)
-        //{
-        //    _audioWalkSource.Play();   
-        //}
-
-        if(isSpawn) 
-        {
-            StartCoroutine(CoroutineSpawn(waitImmortalityTime));
-        }
-
-    }
-
-    private IEnumerator CoroutineSpawn(float wait)
-    {
-        //Debug.Log($"Wait {wait} sec");
-
-        //int counter = 0;
-        _spriteRenderer.color = Color.green;
-        //while(counter <= wait) 
-        //{
-        //    Debug.Log(counter);
-        //    _spriteRenderer.color = Color.green;
-        //    counter++;
-        //}
-        //_spriteRenderer.color = new Color(1, 1, 1);
-
-        yield return new WaitForSeconds(wait); //delay after spawn
-
-        _spriteRenderer.color = new Color(1, 1, 1);
-
-        //Debug.Log("Coroutine end");
-        //Debug.Log(isSpawn);
-        isSpawn = false;
     }
 
     private void FixedUpdate() => Move(horizontalValue);
@@ -247,7 +216,6 @@ public class PlayerController : MonoBehaviour
     void Move(float horizontalVal)
     {
 
-
         direction.x = horizontalVal * moveSpeed;
         
         _rb.MovePosition(_rb.position + direction * Time.fixedDeltaTime);
@@ -309,14 +277,34 @@ public class PlayerController : MonoBehaviour
 
     void Spawn() 
     {
-        //animator.SetBool("Death", false);
         transform.position = startPos;
+        transform.rotation = startRot;
         this.collider.enabled = true;
         isDeath = false;
         enabled = true;
         isSpawn = true;
+        StartCoroutine(CoroutineColorFliker());
+        StartCoroutine(CoroutineSpawn(waitImmortalityTime));
     }
 
+    private IEnumerator CoroutineSpawn(float wait)
+    {
+        //Debug.Log($"Wait {wait} sec");
+        yield return new WaitForSeconds(wait); //delay after spawn
+        isSpawn = false;
+    }
+
+    private IEnumerator CoroutineColorFliker()
+    {
+        while (isSpawn)
+        {
+            Debug.Log("Start CoroutineColorFliker");
+            _spriteRenderer.color = Color.green;
+            yield return new WaitForSeconds(.2f);
+            _spriteRenderer.color = Color.white;
+            yield return new WaitForSeconds(.2f);
+        }
+    }
 
     private void AnimatePlayer()
     {

@@ -1690,7 +1690,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 849d4be62aa48e24f836f8ceb83ca346, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawner: {fileID: 4063830648516391298, guid: 9da3df476f017814596f9ceb7c3c58f6, type: 3}
+  _barrelSpawner: {fileID: 0}
   _averageTime: 3
 --- !u!4 &453532713
 Transform:
@@ -3139,7 +3139,7 @@ GameObject:
   - component: {fileID: 942320881}
   - component: {fileID: 942320880}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

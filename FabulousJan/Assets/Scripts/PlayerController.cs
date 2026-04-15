@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Events;
@@ -10,22 +11,10 @@ public class PlayerController : MonoBehaviour
 {
     public enum InputController { NONE, PC, Mobile };
 
-    public InputController inputType;
+    [SerializeField] private InputController _inputType;
 
-    //public static bool isMobile = false;
-
-    public AudioSource _audioWalkSource;
-
-    public GameObject pokeballPrefab;
-    //public Vector2 deathKick = new Vector2(250f, 250f);
-
-    //public GameManager gameManager;
-
-
-    //public Sprite[] runSprites;
-    //public Sprite climbSprite;
-    //private int spriteIndex;
-
+    [SerializeField] private AudioSource _audioWalkSource;
+    [SerializeField] private GameObject pokeballPrefab;
 
     private SpriteRenderer _spriteRenderer;
 
@@ -34,39 +23,39 @@ public class PlayerController : MonoBehaviour
     private new Collider2D collider;
 
     private Collider2D[] overlaps = new Collider2D[4];
+    
+    private List<Collider2D> overlapsList = new List<Collider2D>();
+    
     private Vector2 direction;
 
-    public bool isGround = true;
-    private bool isClimb;
-    public bool isJump;
-    public bool isDeath = false;
-
-    public bool isSpawn;
-
-
-    public float moveSpeed = 3f;
-    public float jumpStrength = 4f;
+    [SerializeField] private bool _isGround = true;
+    private bool _isClimb;
+    [SerializeField] private bool _isJump;
+    [SerializeField] private bool _isDeath = false;
+    [SerializeField] private bool _isSpawn;
+    [SerializeField] private float _moveSpeed = 3f;
+    [SerializeField] private float _jumpStrength = 4f;
 
     internal Animator animator;
 
     //get and set horizontalValue if pressed button
-    public float HorizontalValue { get { return horizontalValue; } set { horizontalValue = value; } }
+    public float HorizontalValue { get { return _horizontalValue; } set { _horizontalValue = value; } }
     //get and set verticalValue if pressed button
-    public float VerticalValue { get { return verticalValue; } set { verticalValue = value; } }
+    public float VerticalValue { get { return _verticalValue; } set { _verticalValue = value; } }
 
-    float horizontalValue; 
-    float verticalValue;
+    private float _horizontalValue; 
+    private float _verticalValue;
 
-    public AudioClip JumpAudio, WalkAudio, DeathAudio;
+    [SerializeField] private AudioClip _JumpAudio, _WalkAudio, _DeathAudio;
 
-    public float waitAfterDeath;
-    public float waitImmortalityTime;
+    [SerializeField] private float _waitAfterDeath;
+    [SerializeField] private float _waitImmortalityTime;
 
     private Vector3 startPos;
     private Quaternion startRot;
 
 
-    [SerializeField] private GameObject blink;
+    [SerializeField] private GameObject _blink;
 
     private void Awake()
     {
@@ -87,17 +76,17 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
 
-        if (isDeath)
+        if (_isDeath)
         {
             return;
         }
         else 
         {
-            if (inputType == InputController.PC)
+            if (_inputType == InputController.PC)
             {
                 PCHandle();
             }
-            else if (inputType == InputController.Mobile)
+            else if (_inputType == InputController.Mobile)
             {
                 MobileHandle();
             }
@@ -108,13 +97,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void FixedUpdate() => Move(horizontalValue);
+    private void FixedUpdate() => Move(_horizontalValue);
 
     private void CheckCollision()
     {
         
-        isGround = false;
-        isClimb = false;
+        _isGround = false;
+        _isClimb = false;
 
         //the amount that two colliders can overlap
         //increase this value for steeper platforms
@@ -125,6 +114,11 @@ public class PlayerController : MonoBehaviour
         size.x /= 2f;
 
         int amount = Physics2D.OverlapBoxNonAlloc(transform.position, size, 0f, overlaps);
+        
+        print($"Warning: {amount}");
+        
+        //int amount1 = Physics2D.OverlapBox(transform.position, size, amount, new ContactFilter2D(), overlapsList);
+        
 
         for (int i = 0; i < amount; i++)
         {
@@ -134,14 +128,14 @@ public class PlayerController : MonoBehaviour
             {
 
                 // Only set as grounded if the platform is below the player
-                isGround = hit.transform.position.y < (transform.position.y - 0.5f + skinWidth);
+                _isGround = hit.transform.position.y < (transform.position.y - 0.5f + skinWidth);
 
                 // Turn off collision on platforms the player is not grounded to
-                Physics2D.IgnoreCollision(overlaps[i], collider, !isGround);
+                Physics2D.IgnoreCollision(overlaps[i], collider, !_isGround);
             }
             else if (hit.layer == LayerMask.NameToLayer("Ladder"))
             {
-                isClimb = true;
+                _isClimb = true;
             }
         }
 
@@ -151,8 +145,8 @@ public class PlayerController : MonoBehaviour
     {
         //isMobile = false;
 
-        horizontalValue = Input.GetAxis("Horizontal");
-        verticalValue = Input.GetAxis("Vertical");
+        _horizontalValue = Input.GetAxis("Horizontal");
+        _verticalValue = Input.GetAxis("Vertical");
 
         if (Input.GetButtonDown("Jump"))
         {
@@ -171,9 +165,9 @@ public class PlayerController : MonoBehaviour
     private void SetDirection()
     {
 
-        if (isClimb && verticalValue > 0)
+        if (_isClimb && _verticalValue > 0)
         {
-            direction.y = verticalValue * moveSpeed;
+            direction.y = _verticalValue * _moveSpeed;
         } 
         else
         {
@@ -182,7 +176,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Prevent gravity from building up infinitely
-        if (isGround)
+        if (_isGround)
         {
             direction.y = Mathf.Max(direction.y, -1f);
         }
@@ -202,13 +196,13 @@ public class PlayerController : MonoBehaviour
     #region Jump
     public void Jump()
     {
-        isJump = true;
+        _isJump = true;
 
-        if (isGround && isJump)
+        if (_isGround && _isJump)
         {
-            direction = Vector2.up * jumpStrength;
-            SoundManager.Instance.PlaySoundFX(JumpAudio, 0.5f);
-            isJump = false;
+            direction = Vector2.up * _jumpStrength;
+            SoundManager.Instance.PlaySoundFX(_JumpAudio, 0.5f);
+            _isJump = false;
         }
     }
     #endregion
@@ -216,15 +210,15 @@ public class PlayerController : MonoBehaviour
     void Move(float horizontalVal)
     {
 
-        direction.x = horizontalVal * moveSpeed;
+        direction.x = horizontalVal * _moveSpeed;
         
         _rb.MovePosition(_rb.position + direction * Time.fixedDeltaTime);
 
-        float xVal = horizontalVal * moveSpeed * 100 * Time.fixedDeltaTime;
+        float xVal = horizontalVal * _moveSpeed * 100 * Time.fixedDeltaTime;
 
-        Vector2 targetVelocity = new Vector2(xVal, _rb.velocity.y);
+        Vector2 targetVelocity = new Vector2(xVal, _rb.linearVelocity.y);
 
-        _rb.velocity = targetVelocity;
+        _rb.linearVelocity = targetVelocity;
 
     }
 
@@ -234,7 +228,7 @@ public class PlayerController : MonoBehaviour
         {
             enabled = false;
         }
-        else if(isSpawn && collision.gameObject.CompareTag("Obstacle"))
+        else if(_isSpawn && collision.gameObject.CompareTag("Obstacle"))
         {
 
             Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
@@ -253,17 +247,17 @@ public class PlayerController : MonoBehaviour
             Vector2 deathKick = new Vector2(randomKickX, randomKickY);
 
 
-            SoundManager.Instance.PlaySoundFX(DeathAudio, 1f);
+            SoundManager.Instance.PlaySoundFX(_DeathAudio, 1f);
 
             enabled = false;
 
             this.collider.enabled = false;
 
-            _rb.velocity = deathKick;
+            _rb.linearVelocity = deathKick;
 
-            isDeath = true;
+            _isDeath = true;
 
-            StartCoroutine(CoroutineDeath(waitAfterDeath));
+            StartCoroutine(CoroutineDeath(_waitAfterDeath));
 
         }
     }
@@ -280,23 +274,23 @@ public class PlayerController : MonoBehaviour
         transform.position = startPos;
         transform.rotation = startRot;
         this.collider.enabled = true;
-        isDeath = false;
+        _isDeath = false;
         enabled = true;
-        isSpawn = true;
+        _isSpawn = true;
         StartCoroutine(CoroutineColorFliker());
-        StartCoroutine(CoroutineSpawn(waitImmortalityTime));
+        StartCoroutine(CoroutineSpawn(_waitImmortalityTime));
     }
 
     private IEnumerator CoroutineSpawn(float wait)
     {
         //Debug.Log($"Wait {wait} sec");
         yield return new WaitForSeconds(wait); //delay after spawn
-        isSpawn = false;
+        _isSpawn = false;
     }
 
     private IEnumerator CoroutineColorFliker()
     {
-        while (isSpawn)
+        while (_isSpawn)
         {
             Debug.Log("Start CoroutineColorFliker");
             _spriteRenderer.color = Color.green;
@@ -310,7 +304,7 @@ public class PlayerController : MonoBehaviour
     {
 
 
-        if (isSpawn)
+        if (_isSpawn)
         {
             animator.SetBool("Spawn", true);
         }
@@ -319,7 +313,7 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Spawn", false);
         }
 
-        if (!isGround && !isClimb)
+        if (!_isGround && !_isClimb)
         {
             animator.SetBool("Jump", true);
         }
@@ -329,7 +323,7 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Jump", false);
         }
 
-        if (verticalValue > 0 && isClimb)
+        if (_verticalValue > 0 && _isClimb)
         {
             animator.SetBool("Climb", true);
         }
@@ -338,14 +332,14 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Climb", false);
         }
 
-        if(isDeath) 
+        if(_isDeath) 
         {
             animator.SetBool("Death", true);
         }
         else 
         {
             animator.SetBool("Death", false);
-            animator.SetFloat("directionX", Mathf.Abs(_rb.velocity.x));
+            animator.SetFloat("directionX", Mathf.Abs(_rb.linearVelocity.x));
         }
 
     }

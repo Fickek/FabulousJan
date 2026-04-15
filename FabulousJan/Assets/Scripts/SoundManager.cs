@@ -8,8 +8,7 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance;
 
     [SerializeField] private AudioSource _musicSource, _effectSource;
-
-    public bool sound = true;
+    [SerializeField] private bool _sound = true;
 
     void Awake()
     {
@@ -31,12 +30,12 @@ public class SoundManager : MonoBehaviour
 
     public void SoundOff()
     {
-        sound = !sound;
+        _sound = !_sound;
     }
 
     public void PlaySoundFX(AudioClip clip, float volume)
     {
-        if (sound) _effectSource.PlayOneShot(clip, volume);
+        if (_sound) _effectSource.PlayOneShot(clip, volume);
 
         if (UI.isGamePaused) 
         {

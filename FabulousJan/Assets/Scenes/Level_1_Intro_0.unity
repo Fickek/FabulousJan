@@ -2655,8 +2655,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39c9694bb76b56a4583b332a377667bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  changeTime: 41
-  sceneName: Level_1_Intro_1
+  _changeTime: 41
+  _sceneName: Level_1_Intro_1
 --- !u!4 &1127924564
 Transform:
   m_ObjectHideFlags: 0
@@ -3433,7 +3433,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _musicSource: {fileID: 1366827545}
   _effectSource: {fileID: 1727005890}
-  sound: 1
+  _sound: 1
 --- !u!4 &1520485664
 Transform:
   m_ObjectHideFlags: 0
@@ -4768,11 +4768,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 508ea15772804ac4c8d17e2648f62125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pauseMenuUI: {fileID: 359382937}
-  MobileController: {fileID: 0}
-  effectClickSound: {fileID: 8300000, guid: 0b25b038f39b3694d9d5253cd45e9243, type: 3}
-  effectVHSSound: {fileID: 8300000, guid: 7e387eb6ff193b14ebbcca56cf0c4f77, type: 3}
-  effectWalkSound: {fileID: 0}
+  _pauseMenuUI: {fileID: 359382937}
+  _effectClickSound: {fileID: 8300000, guid: 0b25b038f39b3694d9d5253cd45e9243, type: 3}
+  _effectVHSSound: {fileID: 8300000, guid: 7e387eb6ff193b14ebbcca56cf0c4f77, type: 3}
 --- !u!1 &2023901905
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,6 +14,10 @@ public class SpawnPlayer : MonoBehaviour
     void Awake()
     {
         MakeSingelton();
+        if(!GameObject.FindGameObjectWithTag("Player")) 
+        {
+            SpawnPlayerToPointPosition();
+        }
     }
 
     public void SpawnPlayerToPointPosition() 

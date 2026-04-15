@@ -7,6 +7,7 @@ public class Barrel : MonoBehaviour
     [SerializeField] private float _speed = 1f;
     private Rigidbody2D _rigidbody;
     private float _undergeound = -8.0f;
+  
 
     private void Awake()
     {
@@ -24,6 +25,7 @@ public class Barrel : MonoBehaviour
         {
             _rigidbody.AddForce(collision.transform.right * _speed, ForceMode2D.Impulse);
         }
+
     }
 
     private void CheckUnderground()

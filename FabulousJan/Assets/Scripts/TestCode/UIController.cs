@@ -50,7 +50,7 @@ public class UIController : MonoBehaviour
         
     }
 
-    private void FixedUpdate() => rb.velocity = new Vector2(horizontalMove, rb.velocity.y);
+    private void FixedUpdate() => rb.linearVelocity = new Vector2(horizontalMove, rb.linearVelocity.y);
 
     public void leftButtonPress() => leftButton = true;
     public void rightButtonPress() => rightButton = true;

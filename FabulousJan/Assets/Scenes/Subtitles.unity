@@ -1537,7 +1537,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _musicSource: {fileID: 1216932732}
   _effectSource: {fileID: 2563623}
-  sound: 1
+  _sound: 1
 --- !u!4 &727380899
 Transform:
   m_ObjectHideFlags: 0
@@ -6556,7 +6556,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1133600169}
   m_LocalRotation: {x: -1, y: -0, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 50.5}
+  m_LocalPosition: {x: 0, y: 0, z: 90}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8150,11 +8150,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 508ea15772804ac4c8d17e2648f62125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pauseMenuUI: {fileID: 1449560305}
-  MobileController: {fileID: 0}
-  effectClickSound: {fileID: 8300000, guid: 0b25b038f39b3694d9d5253cd45e9243, type: 3}
-  effectVHSSound: {fileID: 0}
-  effectWalkSound: {fileID: 0}
+  _pauseMenuUI: {fileID: 1449560305}
+  _effectClickSound: {fileID: 8300000, guid: 0b25b038f39b3694d9d5253cd45e9243, type: 3}
+  _effectVHSSound: {fileID: 8300000, guid: 7e387eb6ff193b14ebbcca56cf0c4f77, type: 3}
 --- !u!1 &1909150466
 GameObject:
   m_ObjectHideFlags: 0
@@ -8184,8 +8182,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39c9694bb76b56a4583b332a377667bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  changeTime: 75
-  sceneName: Menu
+  _changeTime: 75
+  _sceneName: Menu
 --- !u!4 &1909150468
 Transform:
   m_ObjectHideFlags: 0

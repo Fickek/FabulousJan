@@ -397,6 +397,18 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 180877512, guid: 3e7b2bbe71d12614284acb1ea3cca4bc, type: 3}
+      propertyPath: _JumpAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: df22c1dd93abfe8478da70cb58d3180f, type: 3}
+    - target: {fileID: 180877512, guid: 3e7b2bbe71d12614284acb1ea3cca4bc, type: 3}
+      propertyPath: _inputType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 180877512, guid: 3e7b2bbe71d12614284acb1ea3cca4bc, type: 3}
+      propertyPath: _DeathAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: dd15d1ecd4bbac44db9a7353d22249ee, type: 3}
+    - target: {fileID: 180877512, guid: 3e7b2bbe71d12614284acb1ea3cca4bc, type: 3}
       propertyPath: jumpStrength
       value: 4.1
       objectReference: {fileID: 0}
@@ -409,12 +421,20 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 180877512, guid: 3e7b2bbe71d12614284acb1ea3cca4bc, type: 3}
+      propertyPath: _waitAfterDeath
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 180877512, guid: 3e7b2bbe71d12614284acb1ea3cca4bc, type: 3}
       propertyPath: _audioWalkSource
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 180877512, guid: 3e7b2bbe71d12614284acb1ea3cca4bc, type: 3}
       propertyPath: waitImmortalityTime
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 180877512, guid: 3e7b2bbe71d12614284acb1ea3cca4bc, type: 3}
+      propertyPath: _waitImmortalityTime
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6765076195522158573, guid: 3e7b2bbe71d12614284acb1ea3cca4bc, type: 3}
       propertyPath: m_RootOrder
@@ -1903,7 +1923,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _musicSource: {fileID: 943734146}
   _effectSource: {fileID: 1906750240}
-  sound: 1
+  _sound: 1
 --- !u!1 &666892404
 GameObject:
   m_ObjectHideFlags: 0
@@ -2538,7 +2558,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.9098039}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.6509804}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2681,11 +2701,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 508ea15772804ac4c8d17e2648f62125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pauseMenuUI: {fileID: 1398919280}
-  MobileController: {fileID: 0}
-  effectClickSound: {fileID: 8300000, guid: 0b25b038f39b3694d9d5253cd45e9243, type: 3}
-  effectVHSSound: {fileID: 8300000, guid: 7e387eb6ff193b14ebbcca56cf0c4f77, type: 3}
-  effectWalkSound: {fileID: 8300000, guid: d7812de4dc1834a45a7dbb484214d7b1, type: 3}
+  _pauseMenuUI: {fileID: 1398919280}
+  _effectClickSound: {fileID: 8300000, guid: 0b25b038f39b3694d9d5253cd45e9243, type: 3}
+  _effectVHSSound: {fileID: 8300000, guid: 7e387eb6ff193b14ebbcca56cf0c4f77, type: 3}
 --- !u!1 &943734144
 GameObject:
   m_ObjectHideFlags: 0
@@ -5539,6 +5557,10 @@ PrefabInstance:
     - target: {fileID: 3628221579137362016, guid: 2cf9bb659cd83cb47b7e8e2676950700, type: 3}
       propertyPath: m_Name
       value: UIMoveController
+      objectReference: {fileID: 0}
+    - target: {fileID: 3628221579137362016, guid: 2cf9bb659cd83cb47b7e8e2676950700, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3628221579137362023, guid: 2cf9bb659cd83cb47b7e8e2676950700, type: 3}
       propertyPath: m_Pivot.x

@@ -1819,7 +1819,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _musicSource: {fileID: 1654941915}
   _effectSource: {fileID: 1058172758}
-  sound: 1
+  _sound: 1
 --- !u!4 &954733331
 Transform:
   m_ObjectHideFlags: 0
@@ -2324,8 +2324,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39c9694bb76b56a4583b332a377667bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  changeTime: 19
-  sceneName: Subtitles
+  _changeTime: 19
+  _sceneName: Subtitles
 --- !u!4 &1127924564
 Transform:
   m_ObjectHideFlags: 0
@@ -3413,8 +3413,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 508ea15772804ac4c8d17e2648f62125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pauseMenuUI: {fileID: 2027013331}
-  MobileController: {fileID: 0}
-  effectClickSound: {fileID: 8300000, guid: 0b25b038f39b3694d9d5253cd45e9243, type: 3}
-  effectVHSSound: {fileID: 8300000, guid: 7e387eb6ff193b14ebbcca56cf0c4f77, type: 3}
-  effectWalkSound: {fileID: 0}
+  _pauseMenuUI: {fileID: 2027013331}
+  _effectClickSound: {fileID: 8300000, guid: 0b25b038f39b3694d9d5253cd45e9243, type: 3}
+  _effectVHSSound: {fileID: 8300000, guid: 7e387eb6ff193b14ebbcca56cf0c4f77, type: 3}

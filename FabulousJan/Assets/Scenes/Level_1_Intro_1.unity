@@ -2349,7 +2349,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _musicSource: {fileID: 0}
   _effectSource: {fileID: 0}
-  sound: 1
+  _sound: 1
 --- !u!1 &684073383
 GameObject:
   m_ObjectHideFlags: 0
@@ -3101,7 +3101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.9098039}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.6509804}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5994,8 +5994,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39c9694bb76b56a4583b332a377667bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  changeTime: 4.5
-  sceneName: Level_1
+  _changeTime: 4.5
+  _sceneName: Level_1
 --- !u!4 &1867612327
 Transform:
   m_ObjectHideFlags: 0

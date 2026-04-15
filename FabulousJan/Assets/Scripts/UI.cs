@@ -8,16 +8,13 @@ public class UI : MonoBehaviour
 
     public static bool isGamePaused = false;
 
-    public GameObject pauseMenuUI;
-    public GameObject MobileController;
-
-    [SerializeField] private AudioClip effectClickSound;
-    [SerializeField] private AudioClip effectVHSSound;
-    [SerializeField] private AudioClip effectWalkSound;
+    [SerializeField] private GameObject _pauseMenuUI;
+    [SerializeField] private AudioClip _effectClickSound;
+    [SerializeField] private AudioClip _effectVHSSound;
 
     public void Resume() 
     {
-        pauseMenuUI.SetActive(false);
+        _pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         isGamePaused = false;
 
@@ -26,7 +23,7 @@ public class UI : MonoBehaviour
 
     public void Pause() 
     {
-        pauseMenuUI.SetActive(true);
+        _pauseMenuUI.SetActive(true);
         Time.timeScale = .0f;
         isGamePaused = true;
 
@@ -41,12 +38,12 @@ public class UI : MonoBehaviour
 
     public void playSoundEffect() 
     {
-        SoundManager.Instance.PlaySoundFX(effectClickSound, 1f);
+        SoundManager.Instance.PlaySoundFX(_effectClickSound, 1f);
     }
 
     public void playSoundEnviroment() 
     {
-        if(isGamePaused) SoundManager.Instance.PlaySoundEnv(effectVHSSound);
+        if(isGamePaused) SoundManager.Instance.PlaySoundEnv(_effectVHSSound);
     }
 
 }

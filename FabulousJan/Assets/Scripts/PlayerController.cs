@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour
     }
 
     void Start()
-    {     
+    {
         startPos = transform.position;
         startRot = transform.rotation;
         Debug.Log("Spawn Player");
@@ -224,17 +224,12 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+
         if (collision.gameObject.CompareTag("Objective"))
         {
             enabled = false;
         }
-        else if(_isSpawn && collision.gameObject.CompareTag("Obstacle"))
-        {
-
-            Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
-
-        }
-        else if (collision.gameObject.CompareTag("Obstacle"))
+        else if (collision.gameObject.CompareTag("Obstacle") && !_isSpawn)
         {
             animator.SetBool("Death", true);
 
@@ -279,30 +274,46 @@ public class PlayerController : MonoBehaviour
         _isSpawn = true;
         StartCoroutine(CoroutineColorFliker());
         StartCoroutine(CoroutineSpawn(_waitImmortalityTime));
+
     }
 
     private IEnumerator CoroutineSpawn(float wait)
     {
-        //Debug.Log($"Wait {wait} sec");
         yield return new WaitForSeconds(wait); //delay after spawn
         _isSpawn = false;
     }
 
     private IEnumerator CoroutineColorFliker()
     {
+
+        int playerLayer = LayerMask.NameToLayer("Player");
+        int enemyLayer = LayerMask.NameToLayer("Obstacle");
+
         while (_isSpawn)
         {
             Debug.Log("Start CoroutineColorFliker");
-            _spriteRenderer.color = Color.green;
-            yield return new WaitForSeconds(.2f);
-            _spriteRenderer.color = Color.white;
-            yield return new WaitForSeconds(.2f);
+
+            Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, true);
+
+            //_spriteRenderer.color = Color.green;
+            //yield return new WaitForSeconds(.2f);
+            //_spriteRenderer.color = Color.white;
+            //yield return new WaitForSeconds(.2f);
+
+            //_spriteRenderer.enabled = !_spriteRenderer.enabled;
+            _spriteRenderer.color = new Color(1, 1, 1, .5f);
+            yield return new WaitForSeconds(.1f);
+            _spriteRenderer.color = new Color(1, 1, 1, 1);
+            yield return new WaitForSeconds(.1f);
+
         }
+
+        Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, false);
+
     }
 
     private void AnimatePlayer()
     {
-
 
         if (_isSpawn)
         {
